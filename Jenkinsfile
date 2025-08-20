@@ -37,7 +37,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo '🐳 Starting: Docker Build'
-                bat 'docker build -t yugandhar/my-app:latest .'
+                bat 'docker build -t yugandhar/terraform-runner:latest .'
                 echo '✅ Completed: Docker Build'
             }
         }
@@ -45,38 +45,30 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 echo '📤 Starting: Docker Push'
-                bat 'docker push yugandhar/my-app:latest'
+                bat 'docker push yugandhar/terraform-runner:latest'
                 echo '✅ Completed: Docker Push'
             }
         }
 
-        stage('Initialize Terraform') {
+        stage('Terraform Plan in Docker') {
             steps {
-                echo '🔧 Starting: Terraform Init'
-                bat 'terraform init'
-                echo '✅ Completed: Terraform Init'
-            }
-        }
-
-        stage('Validate Terraform') {
-            steps {
-                echo '🔍 Starting: Terraform Validate'
-                bat 'terraform validate'
-                echo '✅ Completed: Terraform Validate'
-            }
-        }
-
-        stage('Plan Infrastructure') {
-            steps {
-                echo '📐 Starting: Terraform Plan'
-                bat 'terraform plan -out=tfplan'
+                echo '📐 Starting: Terraform Plan in Docker'
+                bat '''
+                    docker run --rm ^
+                      -v %WORKSPACE%:/workspace ^
+                      -w /workspace ^
+                      -e AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID% ^
+                      -e AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY% ^
+                      yugandhar/terraform-runner:latest ^
+                      terraform plan -out=tfplan
+                '''
                 echo '✅ Completed: Terraform Plan'
             }
         }
 
-        stage('Apply Infrastructure') {
+        stage('Terraform Apply (Host Execution)') {
             steps {
-                echo 'terraform apply'
+                echo '🚀 Starting: Terraform Apply on Host'
                 bat 'terraform apply -auto-approve tfplan'
                 echo '✅ Completed: Terraform Apply'
             }
@@ -85,10 +77,10 @@ pipeline {
 
     post {
         success {
-            echo '🎉 Pipeline finibated successfully!'
+            echo '🎉 Pipeline completed successfully!'
         }
         failure {
-            echo '⚠️ Pipeline failed. Check which stage was last completed.'
+            echo '⚠️ Pipeline failed. Check logs for details.'
         }
     }
 }
