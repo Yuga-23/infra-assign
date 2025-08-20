@@ -60,7 +60,7 @@ pipeline {
                       -e AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID% ^
                       -e AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY% ^
                       yuga23/terraform-runner:latest ^
-                      terraform plan -out=tfplan
+                       plan -out=tfplan
                 '''
                 echo '✅ Completed: Terraform Plan'
             }
