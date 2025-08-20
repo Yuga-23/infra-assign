@@ -37,7 +37,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo '🐳 Starting: Docker Build'
-                bat 'docker build -t yugandhar/terraform-runner:latest .'
+                bat 'docker build -t yuga23/terraform-runner:latest .'
                 echo '✅ Completed: Docker Build'
             }
         }
@@ -45,7 +45,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 echo '📤 Starting: Docker Push'
-                bat 'docker push yugandhar/terraform-runner:latest'
+                bat 'docker push yuga23/terraform-runner:latest'
                 echo '✅ Completed: Docker Push'
             }
         }
@@ -59,7 +59,7 @@ pipeline {
                       -w /workspace ^
                       -e AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID% ^
                       -e AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY% ^
-                      yugandhar/terraform-runner:latest ^
+                      yuga23/terraform-runner:latest ^
                       terraform plan -out=tfplan
                 '''
                 echo '✅ Completed: Terraform Plan'
