@@ -14,7 +14,7 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
                     userRemoteConfigs: [[
-                        url: 'https://github.com/Yuga-23/terraform_assign.git',
+                        url: 'https://github.com/Yuga-23/infra-assign.git',
                         credentialsId: 'github-credentials'
                     ]]
                 ])
