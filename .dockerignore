@@ -1,0 +1,29 @@
+# Ignore version control
+.git
+.gitignore
+
+# Ignore CI/CD configs
+Jenkinsfile
+*.tfstate
+*.tfstate.backup
+terraform.tfvars
+*.log
+
+# Ignore OS clutter
+*.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+
+# Ignore build artifacts
+node_modules/
+target/
+dist/
+*.jar
+*.zip
+
+# Ignore credentials
+.env
+aws_credentials
