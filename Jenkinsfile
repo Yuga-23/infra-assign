@@ -55,6 +55,7 @@ pipeline {
                 echo '📐 Starting: Terraform Plan in Docker'
                 bat '''
                     docker run --rm ^
+                      -u 0 ^
                       -v %WORKSPACE%:/workspace ^
                       -w /workspace ^
                       -e AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID% ^
