@@ -56,7 +56,7 @@ pipeline {
                 bat '''
                     docker run --rm ^
                       -u 0 ^
-                      -v %WORKSPACE%:/workspace ^
+                      -v %WORKSPACE%\\terraform_exec:/workspace ^
                       -w /workspace ^
                       -e AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID% ^
                       -e AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY% ^
